@@ -1,17 +1,22 @@
-    mov ax, 0x07c0  ; bios loads our boot-loader to address 0x07C0
+[ORG 0x7c00] ; tell assembler to start address from 0x7c00
+    xor ax, ax
     mov ds, ax  ; setting segment register value to the address
     mov si, msg
+    mov ax, 0xb800  ; text video memory, where we put strings to be printed
+    mov gs, ax
+    mov bx, 0
 ch_loop:
     lodsb
     or al, al
     jz hang
     mov ah, 0x0E
-    int 0x10
+    mov [gs:bx], ax
+    add bx, 2
     jmp ch_loop
 hang:
     cli
     hlt
-msg     db 'Hello world', 13, 10, 0
+msg     db 'Hello world', 0
     times 510-($-$$) db 0
     db 0x55
     db 0xAA
