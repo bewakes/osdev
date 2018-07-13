@@ -1,5 +1,5 @@
-    mov ax, 0x07c0
-    mov ds, ax
+    mov ax, 0x07c0  ; bios loads our boot-loader to address 0x07C0
+    mov ds, ax  ; setting segment register value to the address
     mov si, msg
 ch_loop:
     lodsb
